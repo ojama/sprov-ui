@@ -135,7 +135,7 @@ install_soft() {
 
 install() {
     install_base
-    bash <(curl -L -s https://github.com/sprov065/sprov-ui/raw/master/install.sh)
+    bash <(curl -L -s https://github.com/ojama/sprov-ui/raw/master/install.sh)
     if [[ $? == 0 ]]; then
         if [[ $# == 0 ]]; then
             start
@@ -155,7 +155,7 @@ update() {
         return 0
     fi
     install_base
-    bash <(curl -L -s https://github.com/sprov065/sprov-ui/raw/master/install.sh)
+    bash <(curl -L -s https://github.com/ojama/sprov-ui/raw/master/install.sh)
     if [[ $? == 0 ]]; then
         if [[ $# == 0 ]]; then
             restart
@@ -251,7 +251,7 @@ start() {
             echo -e "${red}面板启动失败，可能是因为启动时间超过了两秒，请稍后查看日志信息${plain}"
         fi
     fi
-        
+
     if [[ $# == 0 ]]; then
         before_show_menu
     fi
@@ -272,7 +272,7 @@ stop() {
             echo -e "${red}面板停止失败，可能是因为停止时间超过了两秒，请稍后查看日志信息${plain}"
         fi
     fi
-        
+
     if [[ $# == 0 ]]; then
         before_show_menu
     fi
@@ -299,7 +299,7 @@ enable() {
     else
         echo -e "${red}sprov-ui 设置开机自启失败${plain}"
     fi
-    
+
     if [[ $# == 0 ]]; then
         before_show_menu
     fi
@@ -312,7 +312,7 @@ disable() {
     else
         echo -e "${red}sprov-ui 取消开机自启失败${plain}"
     fi
-    
+
     if [[ $# == 0 ]]; then
         before_show_menu
     fi
@@ -339,7 +339,7 @@ install_bbr() {
 }
 
 update_shell() {
-    wget -O /usr/bin/sprov-ui -N --no-check-certificate https://github.com/sprov065/sprov-ui/raw/master/sprov-ui.sh
+    wget -O /usr/bin/sprov-ui -N --no-check-certificate https://github.com/ojama/sprov-ui/raw/master/sprov-ui.sh
     if [[ $? != 0 ]]; then
         echo ""
         echo -e "${red}下载脚本失败，请检查本机能否连接 Github${plain}"

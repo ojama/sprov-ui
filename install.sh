@@ -100,26 +100,22 @@ install_java() {
         if [[ is_ok -eq 1 ]]; then
 	    echo -e "${green}已检测到1.8及以上版本的java，无需重复安装${plain}"
 	else
-	    echo -e "错误：${red}/usr/bin/java${red}的版本低于1.8，请安装大于等于1.8版本的java${plain}"
-        echo -e "尝试更新系统可能可以解决该问题："
-	    echo -e "CentOS: ${green}yum update${plain}"
-        echo -e "Debian / Ubuntu: ${green}apt-get update && apt-get upgrade${plain}"
-        exit -1
+	    echo -e "错误：${green}/usr/bin/java${red}的版本低于1.8，请安装大于等于1.8版本的java${plain}"
+	    exit -1
 	fi
     elif [[ x"${release}" == x"centos" ]]; then
         yum install java-1.8.0-openjdk -y
     elif [[ x"${release}" == x"debian" || x"${release}" == x"ubuntu" ]]; then
-        apt install default-jre -y
+        apt install openjdk-8-jre-headless -y
     fi
     if [[ $? -ne 0 ]]; then
         echo -e "${red}Java环境安装失败，请检查错误信息${plain}"
         echo -e "尝试更新系统可能可以解决该问题"
         echo -e "CentOS: ${green}yum update${plain}"
-        echo -e "Debian / Ubuntu: ${green}apt-get update && apt-get upgrade${plain}"
+        echo -e "Debian / Ubuntu: ${green}apt-get update${plain}"
         echo -e ""
-        echo -e "Debian / Ubuntu 也可以尝试用以下命令安装 java 环境，若安装 java 成功，那么重新运行安装面板即可:"
-        echo -e "1. ${green}apt-get install openjdk-11-jre-headless -y${plain}"
-        echo -e "2. ${green}apt-get install openjdk-8-jre-headless -y${plain}"
+        echo -e "Debian / Ubuntu 也可以尝试用这条命令安装 java 环境，若安装 java 成功，那么重新运行安装面板即可:"
+        echo -e "${green}apt-get install openjdk-11-jre-headless -y${plain}"
         exit 1
     fi
 }
@@ -196,7 +192,7 @@ set_systemd() {
     reset="y"
     first="y"
     if [[ -f "${conf_path}" ]]; then
-        read -p "是否重新设置面板端口、用户名和密码[默认n]：" reset
+        read -p "是否重新设置面板端口、用户名和密码[y/n]：" reset
         first="n"
     fi
     if [[ x"$reset" == x"y" || x"$reset" == x"Y" ]]; then
@@ -227,9 +223,9 @@ install_sprov-ui() {
     if [[ -f "/usr/local/sprov-ui/sprov-ui.war" ]]; then
         rm /usr/local/sprov-ui/sprov-ui.war -f
     fi
-    last_version=$(curl --silent "https://api.github.com/repos/sprov065/sprov-ui/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+    last_version=$(curl --silent "https://api.github.com/repos/ojama/sprov-ui/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
     echo -e "检测到sprov-ui最新版本：${last_version}，开始下载核心文件"
-    wget -N --no-check-certificate -O /usr/local/sprov-ui/sprov-ui.jar https://github.com/sprov065/sprov-ui/releases/download/${last_version}/sprov-ui-${last_version}.jar
+    wget -N --no-check-certificate -O /usr/local/sprov-ui/sprov-ui.jar https://github.com/ojama/sprov-ui/releases/download/${last_version}/sprov-ui-${last_version}.jar
     if [[ $? -ne 0 ]]; then
         echo -e "${red}下载sprov-ui核心文件失败，请确保你的服务器能够下载Github的文件，如果多次安装失败，请参考手动安装教程${plain}"
         exit 1
@@ -254,7 +250,7 @@ install_sprov-ui() {
     echo -e "------------------------------------------"
     echo -e ""
     echo -e "若未下载管理脚本，使用以下命令下载管理脚本:"
-    echo -e "wget -O /usr/bin/sprov-ui -N --no-check-certificate https://github.com/sprov065/sprov-ui/raw/master/sprov-ui.sh && chmod +x /usr/bin/sprov-ui"
+    echo -e "wget -O /usr/bin/sprov-ui -N --no-check-certificate https://github.com/ojama/sprov-ui/raw/master/sprov-ui.sh && chmod +x /usr/bin/sprov-ui"
     echo -e ""
     echo -e "若未安装 bbr 等加速工具，推荐使用以下命令一键安装 bbr："
     echo -e "wget --no-check-certificate https://github.com/sprov065/blog/raw/master/bbr.sh && bash bbr.sh"
